@@ -1,15 +1,41 @@
+/// <reference path="./typings/main.d.ts" />
 "use strict";
-const express = require("express");
+var express = require("express");
 var dal = require("@nodulus/data");
+//import {dal} from "@nodulus/data";
 var ObjectID = require("mongodb").ObjectID;
-class api {
-    cleanEntityFramework(body, level) {
+var api = (function () {
+    function api() {
+    }
+    //var dal = require('./dal.js');
+    //var util = require('util');
+    //var fs = require('fs');
+    //var path = require('path');
+    //var express = require('express');
+    //var isObject = require('is-object');
+    api.prototype.cleanEntityFramework = function (body, level) {
         if (body != null) {
             for (var key in body) {
+                //                
+                // if(isObject( body[key] ) && body[key].EntityKey !== undefined)
+                // {
+                //     //var o;
+                //     //var refCollectionName = body[key].EntityKey.EntitySetName;
+                //     //var _id = body[key].EntityKey.EntityKeyValues[0].Value;
+                //     
+                //     //body[key] = {
+                //     //    "$ref" : refCollectionName,
+                //     //    "$id" : _id
+                //     //}
+                //     
+                // }
+                // else
+                // {
                 if (key.indexOf("$") == 0 || key == "EntityKey") {
                     delete body[key];
                     continue;
                 }
+                //}
                 if (Array.isArray(body[key])) {
                     for (var x = 0; x < body[key].length; x++) {
                         var subObj = body[key][x];
@@ -17,20 +43,21 @@ class api {
                     }
                 }
                 if (typeof (body[key]) == "object" && body[key] !== null) {
+                    //&&  body[key].$ref === undefined
                     this.cleanEntityFramework(body[key], level++);
                 }
             }
         }
-    }
-    getOperator(key) {
+    };
+    api.prototype.getOperator = function (key) {
         var ops = {
             "$gt": ">"
         };
         if (ops[key] === undefined)
             return key;
         return ops[key];
-    }
-    start(app) {
+    };
+    api.prototype.start = function (app) {
         var router = express.Router();
         router.route('/*')
             .get(function (req, res) {
@@ -73,9 +100,37 @@ class api {
             }
             if (req.query.$sort)
                 searchCommand.$orderby = JSON.parse(req.query.$sort);
-            dal.get(entity, searchCommand, specialCommand, aggregateCommand, (result) => {
+            dal.get(entity, searchCommand, specialCommand, aggregateCommand, function (result) {
                 res.json(result);
             });
+            //dal.connect(function (err: any, db: any) {
+            //    if (db === null) {
+            //        return res.json(err);
+            //    }
+            //    db.collection(entity).ensureIndex(
+            //        { "$**": "text" },
+            //        { name: "TextIndex" }
+            //    )
+            //    if (specialCommand.$skip && specialCommand.$limit) {
+            //        //get the item count
+            //        db.collection(entity).find(searchCommand.$query).count(function (err: any, countResult: number) {
+            //            db.collection(entity).find(searchCommand, aggregateCommand.$project).skip(Number(specialCommand.$skip)).limit(Number(specialCommand.$limit)).toArray(function (err: any, result: any) {
+            //                var data = { items: result, count: countResult }
+            //                res.json(data);
+            //            });
+            //        });
+            //    } else {
+            //        if (searchCommand.$query && searchCommand.$query["_id"]) {
+            //            if (global.config.appSettings.database.mongodb.useObjectId) {
+            //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
+            //            }
+            //        }
+            //        db.collection(entity).find(searchCommand).toArray(function (err: any, result: any) {
+            //            var data = { items: result !== null ? result : [], count: result !== null ? result.length : 0 }
+            //            res.json(data);
+            //        });
+            //    }
+            //})
         })
             .put(function (req, res) {
             if (!req.body)
@@ -89,6 +144,8 @@ class api {
             if (body.length !== undefined) {
                 for (var i = 0; i < body.length; i++) {
                     if (!global.config.appSettings.database.mongodb.useObjectId) {
+                        //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
+                        //            }
                         if (body[i].Id !== undefined) {
                             body[i]._id = body[i].Id;
                         }
@@ -98,6 +155,26 @@ class api {
                         }
                     }
                     this.cleanEntityFramework(body[i], 0);
+                    //if (body[i] != null) {
+                    //    for (var key in body[i]) {
+                    //        if (key.indexOf("$") == 0 || key == "EntityKey") {
+                    //            delete body[i][key];
+                    //            continue;
+                    //        }
+                    //        if (Array.isArray(body[i][key])) {
+                    //            for (var x = 0; x < body[i][key].length; x++) {
+                    //                var subObj = body[i][key][x];
+                    //                for (var subkey in subObj) {
+                    //                    if (subkey.indexOf("$") == 0 || subkey == "EntityKey") {
+                    //                        delete subObj[subkey];
+                    //                        continue;
+                    //                    }
+                    //                }
+                    //            }
+                    //        }
+                    //        query += key + "=@" + key + and;
+                    //    }
+                    //}
                     dal.query(query, body[i], function (apiResult) {
                         var data = { items: apiResult.ops };
                         global["eventServer"].emit(entity + " UPDATE");
@@ -159,12 +236,22 @@ class api {
             });
         });
         app.use('/api', router);
-    }
-}
+    };
+    return api;
+}());
 exports.api = api;
-class SpecialCommand {
-}
-class SearchCommand {
-}
-class AggregateCommand {
-}
+var SpecialCommand = (function () {
+    function SpecialCommand() {
+    }
+    return SpecialCommand;
+}());
+var SearchCommand = (function () {
+    function SearchCommand() {
+    }
+    return SearchCommand;
+}());
+var AggregateCommand = (function () {
+    function AggregateCommand() {
+    }
+    return AggregateCommand;
+}());
