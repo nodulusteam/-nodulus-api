@@ -1,55 +1,27 @@
-# @nodulus/config
+# @nodulus/api
 
 
 
 
- configuration component for nodulus.
+ api component for nodulus.
   
 
    
-[![NPM](https://nodei.co/npm/@nodulus/config.png)](https://npmjs.org/package/@nodulus/config)
+[![NPM](https://nodei.co/npm/@nodulus/api.png)](https://npmjs.org/package/@nodulus/api)
 
- ![Alt text](https://travis-ci.org/nodulusteam/-nodulus-config.svg?branch=master "build")
- ![Alt text](https://david-dm.org/nodulusteam/-nodulus-config.svg "dependencies")
+ ![Alt text](https://travis-ci.org/nodulusteam/-nodulus-api.svg?branch=master "build")
+ ![Alt text](https://david-dm.org/nodulusteam/-nodulus-api.svg "dependencies")
  
 
 
  ### install
- `npm install @nodulus/config`
+ `npm install @nodulus/api`
  
  
  ### usage
  ```
- var config=require("@nodulus/config").config;
- var consts=require("@nodulus/config").consts;
- 
- var settings = config.appSettings;
+ var api=require("@nodulus/api");
+ api.start();
  ```
  
- 
- 
- ### config file format 
- 
- ```
- {
-  "name": "nodulus",
-  "url": "",
-  "port": "4000",
-  "appRoot": "/",
-  "enableSockets": true,
-  "database": {
-    "mongodb": {
-      "useObjectId": true,
-      "host": "---mongo url---"
-    }
-    ||
-    { "diskdb": { "host": "server/data" } }
-  }
-}
- 
- ```
- ### set config file location
-```
- SET CONFIG_PATH = '--config--path--'
- 
-```
+  
