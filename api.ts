@@ -12,11 +12,14 @@
 import * as http from "http";
 import * as express from "express";
 var dal = require("@nodulus/data");
+var config = require("@nodulus/config").config;
+var logs = require("@nodulus/config").logs;
+
 //import {dal} from "@nodulus/data";
 var ObjectID = require("mongodb").ObjectID;
 
 
-export class api {
+class api {
 
     //var dal = require('./dal.js');
     //var util = require('util');
@@ -200,7 +203,7 @@ export class api {
 
 
             })
-            .put(function (req: any, res: any) {
+            .post(function (req: any, res: any) {
                 if (!req.body) return res.sendStatus(400);
                 var entity = req.params[0];
                 var and = ",";
@@ -216,7 +219,7 @@ export class api {
                     for (var i = 0; i < body.length; i++) {
 
 
-                        if (!global.config.appSettings.database.mongodb.useObjectId) {
+                        if (!config.appSettings.database.mongodb.useObjectId) {
                             //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
                             //            }
 
@@ -270,7 +273,7 @@ export class api {
 
                 }
                 else {
-                    if (!global.config.appSettings.database.mongodb.useObjectId) {
+                    if (!config.appSettings.database.mongodb.useObjectId) {
                         body._id = require("node-uuid").v4();
                     }
 
@@ -287,7 +290,7 @@ export class api {
                 }
 
             })
-            .post(function (req: any, res: any) {
+            .put(function (req: any, res: any) {
                 if (!req.body) return res.sendStatus(400);
                 var entity = req.params[0];
                 var and = ",";
@@ -357,6 +360,5 @@ class AggregateCommand {
 
 
 
-
-
+ module.exports = new api();
 

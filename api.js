@@ -2,6 +2,8 @@
 "use strict";
 var express = require("express");
 var dal = require("@nodulus/data");
+var config = require("@nodulus/config").config;
+var logs = require("@nodulus/config").logs;
 //import {dal} from "@nodulus/data";
 var ObjectID = require("mongodb").ObjectID;
 var api = (function () {
@@ -132,7 +134,7 @@ var api = (function () {
             //    }
             //})
         })
-            .put(function (req, res) {
+            .post(function (req, res) {
             if (!req.body)
                 return res.sendStatus(400);
             var entity = req.params[0];
@@ -143,7 +145,7 @@ var api = (function () {
                 body = JSON.parse(body.data);
             if (body.length !== undefined) {
                 for (var i = 0; i < body.length; i++) {
-                    if (!global.config.appSettings.database.mongodb.useObjectId) {
+                    if (!config.appSettings.database.mongodb.useObjectId) {
                         //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
                         //            }
                         if (body[i].Id !== undefined) {
@@ -184,7 +186,7 @@ var api = (function () {
                 }
             }
             else {
-                if (!global.config.appSettings.database.mongodb.useObjectId) {
+                if (!config.appSettings.database.mongodb.useObjectId) {
                     body._id = require("node-uuid").v4();
                 }
                 if (body != null) {
@@ -199,7 +201,7 @@ var api = (function () {
                 });
             }
         })
-            .post(function (req, res) {
+            .put(function (req, res) {
             if (!req.body)
                 return res.sendStatus(400);
             var entity = req.params[0];
@@ -239,7 +241,6 @@ var api = (function () {
     };
     return api;
 }());
-exports.api = api;
 var SpecialCommand = (function () {
     function SpecialCommand() {
     }
@@ -255,3 +256,4 @@ var AggregateCommand = (function () {
     }
     return AggregateCommand;
 }());
+module.exports = new api();

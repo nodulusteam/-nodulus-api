@@ -1,6 +1,6 @@
 {
   "name": "@nodulus/api",
-  "version": "1.0.5",
+  "version": "1.0.10",
   "description": "",
   "main": "api.js",
   "scripts": {
@@ -14,10 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "@nodulus/config": "*",
-    "@nodulus/data": "^1.0.12",
+    "@nodulus/data": "*",
     "@nodulus/logs": "*"
   },
-  "devDependencies": {
+ "devDependencies": {
     "chai": "^3.5.0",
     "del": "^2.2.1",
     "gulp": "^3.9.1",
