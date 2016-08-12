@@ -219,7 +219,7 @@ class api {
                     for (var i = 0; i < body.length; i++) {
 
 
-                        if (!config.appSettings.database.mongodb.useObjectId) {
+                        if (!config.appSettings.database.mongodb && config.appSettings.database.mongodb.useObjectId) {
                             //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
                             //            }
 
@@ -273,7 +273,7 @@ class api {
 
                 }
                 else {
-                    if (!config.appSettings.database.mongodb.useObjectId) {
+                    if (config.appSettings.database.mongodb &&  !config.appSettings.database.mongodb.useObjectId) {
                         body._id = require("node-uuid").v4();
                     }
 

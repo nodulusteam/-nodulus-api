@@ -145,7 +145,7 @@ var api = (function () {
                 body = JSON.parse(body.data);
             if (body.length !== undefined) {
                 for (var i = 0; i < body.length; i++) {
-                    if (!config.appSettings.database.mongodb.useObjectId) {
+                    if (!config.appSettings.database.mongodb && config.appSettings.database.mongodb.useObjectId) {
                         //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
                         //            }
                         if (body[i].Id !== undefined) {
@@ -186,7 +186,7 @@ var api = (function () {
                 }
             }
             else {
-                if (!config.appSettings.database.mongodb.useObjectId) {
+                if (config.appSettings.database.mongodb && !config.appSettings.database.mongodb.useObjectId) {
                     body._id = require("node-uuid").v4();
                 }
                 if (body != null) {
