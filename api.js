@@ -237,7 +237,7 @@ var api = (function () {
                 res.end(JSON.stringify(data));
             });
         });
-        app.use('/api', router);
+        app.use('/@nodulus/api', router);
     };
     return api;
 }());

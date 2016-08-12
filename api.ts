@@ -334,7 +334,7 @@ class api {
 
 
 
-        app.use('/api', router);
+        app.use('/@nodulus/api', router);
 
     }
 }
