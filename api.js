@@ -1,43 +1,18 @@
 /// <reference path="./typings/main.d.ts" />
 "use strict";
-var express = require("express");
 var dal = require("@nodulus/data");
 var config = require("@nodulus/config").config;
 var logs = require("@nodulus/config").logs;
-//import {dal} from "@nodulus/data";
-var ObjectID = require("mongodb").ObjectID;
 var api = (function () {
     function api() {
     }
-    //var dal = require('./dal.js');
-    //var util = require('util');
-    //var fs = require('fs');
-    //var path = require('path');
-    //var express = require('express');
-    //var isObject = require('is-object');
     api.prototype.cleanEntityFramework = function (body, level) {
         if (body != null) {
             for (var key in body) {
-                //                
-                // if(isObject( body[key] ) && body[key].EntityKey !== undefined)
-                // {
-                //     //var o;
-                //     //var refCollectionName = body[key].EntityKey.EntitySetName;
-                //     //var _id = body[key].EntityKey.EntityKeyValues[0].Value;
-                //     
-                //     //body[key] = {
-                //     //    "$ref" : refCollectionName,
-                //     //    "$id" : _id
-                //     //}
-                //     
-                // }
-                // else
-                // {
                 if (key.indexOf("$") == 0 || key == "EntityKey") {
                     delete body[key];
                     continue;
                 }
-                //}
                 if (Array.isArray(body[key])) {
                     for (var x = 0; x < body[key].length; x++) {
                         var subObj = body[key][x];
@@ -59,8 +34,9 @@ var api = (function () {
             return key;
         return ops[key];
     };
-    api.prototype.start = function (app) {
-        var router = express.Router();
+    api.prototype.start = function () {
+        var app = require("@nodulus/core");
+        var router = require("@nodulus/core").Router();
         router.route('/*')
             .get(function (req, res) {
             var entity = req.params[0];

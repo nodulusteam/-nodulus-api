@@ -10,50 +10,29 @@
  */
 
 import * as http from "http";
-import * as express from "express";
+ 
 var dal = require("@nodulus/data");
 var config = require("@nodulus/config").config;
 var logs = require("@nodulus/config").logs;
-
-//import {dal} from "@nodulus/data";
-var ObjectID = require("mongodb").ObjectID;
+ 
 
 
 class api {
 
-    //var dal = require('./dal.js');
-    //var util = require('util');
-    //var fs = require('fs');
-    //var path = require('path');
-    //var express = require('express');
-    //var isObject = require('is-object');
+    
 
 
     cleanEntityFramework(body: any, level: number) {
         if (body != null) {
             for (var key in body) {
 
-                //                
-                // if(isObject( body[key] ) && body[key].EntityKey !== undefined)
-                // {
-                //     //var o;
-                //     //var refCollectionName = body[key].EntityKey.EntitySetName;
-                //     //var _id = body[key].EntityKey.EntityKeyValues[0].Value;
-                //     
-                //     //body[key] = {
-                //     //    "$ref" : refCollectionName,
-                //     //    "$id" : _id
-                //     //}
-                //     
-                // }
-                // else
-                // {
+               
                 if (key.indexOf("$") == 0 || key == "EntityKey") {
 
                     delete body[key];
                     continue;
                 }
-                //}
+                
 
                 if (Array.isArray(body[key])) {
                     for (var x = 0; x < body[key].length; x++) {
@@ -68,14 +47,10 @@ class api {
                     //&&  body[key].$ref === undefined
 
                     this.cleanEntityFramework(body[key], level++);
-                    //for (var x in body[key]{
-                    //    var subObj = body[key][x];
-                    //    cleanEntityFramework(body[key], level++);
-
-                    //}
+                     
 
                 }
-                //query += key + "=@" + key + and;
+                 
             }
         }
 
@@ -95,8 +70,9 @@ class api {
     }
 
 
-    start(app: any) {
-        var router = express.Router();
+    start() {
+        var app = require("@nodulus/core");
+        var router = require("@nodulus/core").Router();
         router.route('/*')
             .get(function (req: any, res: any) {
                 var entity = req.params[0];
