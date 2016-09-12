@@ -1,6 +1,6 @@
 {
   "name": "@nodulus/api",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "rest endpoint for javascript & mobile applications",
   "main": "api.js",
   "scripts": {
