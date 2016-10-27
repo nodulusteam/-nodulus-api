@@ -1,12 +1,9 @@
-/// <reference path="./typings/main.d.ts" />
 "use strict";
 var dal = require("@nodulus/data");
-var config = require("@nodulus/config").config;
+var config = require("@nodulus/config");
 var logs = require("@nodulus/config").logs;
-var api = (function () {
-    function api() {
-    }
-    api.prototype.cleanEntityFramework = function (body, level) {
+class api {
+    cleanEntityFramework(body, level) {
         if (body != null) {
             for (var key in body) {
                 if (key.indexOf("$") == 0 || key == "EntityKey") {
@@ -20,23 +17,23 @@ var api = (function () {
                     }
                 }
                 if (typeof (body[key]) == "object" && body[key] !== null) {
-                    //&&  body[key].$ref === undefined
                     this.cleanEntityFramework(body[key], level++);
                 }
             }
         }
-    };
-    api.prototype.getOperator = function (key) {
+    }
+    getOperator(key) {
         var ops = {
             "$gt": ">"
         };
         if (ops[key] === undefined)
             return key;
         return ops[key];
-    };
-    api.prototype.start = function () {
+    }
+    start() {
         var app = require("@nodulus/core");
-        var router = require("@nodulus/core").Router();
+        var express = require("@nodulus/core").express;
+        var router = express.Router();
         router.route('/*')
             .get(function (req, res) {
             var entity = req.params[0];
@@ -78,37 +75,9 @@ var api = (function () {
             }
             if (req.query.$sort)
                 searchCommand.$orderby = JSON.parse(req.query.$sort);
-            dal.get(entity, searchCommand, specialCommand, aggregateCommand, function (result) {
+            dal.get(entity, searchCommand, specialCommand, aggregateCommand, (result) => {
                 res.json(result);
             });
-            //dal.connect(function (err: any, db: any) {
-            //    if (db === null) {
-            //        return res.json(err);
-            //    }
-            //    db.collection(entity).ensureIndex(
-            //        { "$**": "text" },
-            //        { name: "TextIndex" }
-            //    )
-            //    if (specialCommand.$skip && specialCommand.$limit) {
-            //        //get the item count
-            //        db.collection(entity).find(searchCommand.$query).count(function (err: any, countResult: number) {
-            //            db.collection(entity).find(searchCommand, aggregateCommand.$project).skip(Number(specialCommand.$skip)).limit(Number(specialCommand.$limit)).toArray(function (err: any, result: any) {
-            //                var data = { items: result, count: countResult }
-            //                res.json(data);
-            //            });
-            //        });
-            //    } else {
-            //        if (searchCommand.$query && searchCommand.$query["_id"]) {
-            //            if (global.config.appSettings.database.mongodb.useObjectId) {
-            //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
-            //            }
-            //        }
-            //        db.collection(entity).find(searchCommand).toArray(function (err: any, result: any) {
-            //            var data = { items: result !== null ? result : [], count: result !== null ? result.length : 0 }
-            //            res.json(data);
-            //        });
-            //    }
-            //})
         })
             .post(function (req, res) {
             if (!req.body)
@@ -122,8 +91,6 @@ var api = (function () {
             if (body.length !== undefined) {
                 for (var i = 0; i < body.length; i++) {
                     if (!config.appSettings.database.mongodb && config.appSettings.database.mongodb.useObjectId) {
-                        //                searchCommand.$query["_id"] = ObjectID(searchCommand.$query["_id"]);
-                        //            }
                         if (body[i].Id !== undefined) {
                             body[i]._id = body[i].Id;
                         }
@@ -133,26 +100,6 @@ var api = (function () {
                         }
                     }
                     this.cleanEntityFramework(body[i], 0);
-                    //if (body[i] != null) {
-                    //    for (var key in body[i]) {
-                    //        if (key.indexOf("$") == 0 || key == "EntityKey") {
-                    //            delete body[i][key];
-                    //            continue;
-                    //        }
-                    //        if (Array.isArray(body[i][key])) {
-                    //            for (var x = 0; x < body[i][key].length; x++) {
-                    //                var subObj = body[i][key][x];
-                    //                for (var subkey in subObj) {
-                    //                    if (subkey.indexOf("$") == 0 || subkey == "EntityKey") {
-                    //                        delete subObj[subkey];
-                    //                        continue;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //        query += key + "=@" + key + and;
-                    //    }
-                    //}
                     dal.query(query, body[i], function (apiResult) {
                         var data = { items: apiResult.ops };
                         global["eventServer"].emit(entity + " UPDATE");
@@ -214,22 +161,12 @@ var api = (function () {
             });
         });
         app.use('/@nodulus/api', router);
-    };
-    return api;
-}());
-var SpecialCommand = (function () {
-    function SpecialCommand() {
     }
-    return SpecialCommand;
-}());
-var SearchCommand = (function () {
-    function SearchCommand() {
-    }
-    return SearchCommand;
-}());
-var AggregateCommand = (function () {
-    function AggregateCommand() {
-    }
-    return AggregateCommand;
-}());
+}
+class SpecialCommand {
+}
+class SearchCommand {
+}
+class AggregateCommand {
+}
 module.exports = new api();

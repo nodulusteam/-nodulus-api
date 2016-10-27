@@ -10,29 +10,24 @@
  */
 
 import * as http from "http";
- 
+
 var dal = require("@nodulus/data");
-var config = require("@nodulus/config").config;
+var config = require("@nodulus/config");
 var logs = require("@nodulus/config").logs;
- 
 
 
 class api {
-
-    
-
-
     cleanEntityFramework(body: any, level: number) {
         if (body != null) {
             for (var key in body) {
 
-               
+
                 if (key.indexOf("$") == 0 || key == "EntityKey") {
 
                     delete body[key];
                     continue;
                 }
-                
+
 
                 if (Array.isArray(body[key])) {
                     for (var x = 0; x < body[key].length; x++) {
@@ -47,10 +42,10 @@ class api {
                     //&&  body[key].$ref === undefined
 
                     this.cleanEntityFramework(body[key], level++);
-                     
+
 
                 }
-                 
+
             }
         }
 
@@ -71,8 +66,11 @@ class api {
 
 
     start() {
+
         var app = require("@nodulus/core");
-        var router = require("@nodulus/core").Router();
+        var express = require("@nodulus/core").express;
+        var router = express.Router();
+
         router.route('/*')
             .get(function (req: any, res: any) {
                 var entity = req.params[0];
@@ -249,7 +247,7 @@ class api {
 
                 }
                 else {
-                    if (config.appSettings.database.mongodb &&  !config.appSettings.database.mongodb.useObjectId) {
+                    if (config.appSettings.database.mongodb && !config.appSettings.database.mongodb.useObjectId) {
                         body._id = require("node-uuid").v4();
                     }
 
@@ -336,5 +334,5 @@ class AggregateCommand {
 
 
 
- module.exports = new api();
+module.exports = new api();
 

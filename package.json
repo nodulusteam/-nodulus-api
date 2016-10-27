@@ -1,6 +1,6 @@
 {
   "name": "@nodulus/api",
-  "version": "1.0.22",
+  "version": "1.0.27",
   "description": "rest endpoint for javascript & mobile applications",
   "main": "api.js",
   "scripts": {
@@ -17,10 +17,10 @@
   "author": "nodulus",
   "license": "ISC",
   "dependencies": {
-    "@nodulus/config": "^1.0.60",
-    "@nodulus/data": "^1.0.21",
-    "@nodulus/logs": "^0.0.22",
-    "@nodulus/core": "^1.0.20"
+    "@nodulus/config": "^1.0.70",
+    "@nodulus/data": "^1.0.29",
+    "@nodulus/logs": "^0.0.27",
+    "@nodulus/core": "^2.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
@@ -31,10 +31,11 @@
     "gulp-publish": "^0.8.7",
     "gulp-run": "^1.7.1",
     "gulp-tslint": "^6.0.1",
-    "gulp-typescript": "^2.13.6",
+    "gulp-typescript": "^3.0.2",
     "mocha": "^2.5.3",
     "run-sequence": "^1.2.2",
     "tslint": "^3.13.0",
-    "typescript": "^1.8.10"
+    "typescript": "^2.0.3",
+    "@types/node": "*"
   }
 }
