@@ -17,12 +17,14 @@
   "author": "nodulus",
   "license": "ISC",
   "dependencies": {
-    "@nodulus/config": "^1.0.70",
-    "@nodulus/data": "^1.0.29",
-    "@nodulus/logs": "^0.0.27",
-    "@nodulus/core": "^2.0.2"
+    "@nodulus/config": "*",
+    "@nodulus/data": "*",
+    "@nodulus/logs": "*",
+    "@nodulus/core": "*"
   },
   "devDependencies": {
+    "@nodulus/data-diskdb": "0.0.9",
+    "@types/node": "*",
     "chai": "^3.5.0",
     "del": "^2.2.1",
     "gulp": "^3.9.1",
@@ -35,7 +37,6 @@
     "mocha": "^2.5.3",
     "run-sequence": "^1.2.2",
     "tslint": "^3.13.0",
-    "typescript": "^2.0.3",
-    "@types/node": "*"
+    "typescript": "^2.0.3"
   }
 }

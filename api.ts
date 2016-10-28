@@ -67,9 +67,8 @@ class api {
 
     start() {
 
-        var app = require("@nodulus/core");
-        var express = require("@nodulus/core").express;
-        var router = express.Router();
+        var app = require("@nodulus/core");       
+        var router = app.Router();
 
         router.route('/*')
             .get(function (req: any, res: any) {

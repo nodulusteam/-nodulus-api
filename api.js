@@ -32,8 +32,8 @@ class api {
     }
     start() {
         var app = require("@nodulus/core");
-        var express = require("@nodulus/core").express;
-        var router = express.Router();
+        var router = app.Router();
+        //var router = express.Router();
         router.route('/*')
             .get(function (req, res) {
             var entity = req.params[0];
