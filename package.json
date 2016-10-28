@@ -16,14 +16,13 @@
   ],
   "author": "nodulus",
   "license": "ISC",
-  "dependencies": {
+  "dependencies": {},
+  "devDependencies": {
     "@nodulus/config": "*",
     "@nodulus/data": "*",
     "@nodulus/logs": "*",
-    "@nodulus/core": "*"
-  },
-  "devDependencies": {
-    "@nodulus/data-diskdb": "0.0.9",
+    "@nodulus/core": "*",
+    "@nodulus/data-diskdb": "*",
     "@types/node": "*",
     "chai": "^3.5.0",
     "del": "^2.2.1",
